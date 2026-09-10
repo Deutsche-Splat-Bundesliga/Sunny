@@ -20,12 +20,15 @@ import java.util.concurrent.TimeUnit;
 @Deprecated
 public class TwitterNotificationService {
 
+    @Deprecated
     public final Logger logger = LoggerFactory.getLogger(TwitterNotificationService.class);
+    @Deprecated
     public Future<Response> currentStream = null;
 
     private TwitterClient twitterClient;
     private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
+    @Deprecated
     public void startService() {
         try {
             BotProperties properties = DiscordBot.getProperties();
@@ -50,7 +53,7 @@ public class TwitterNotificationService {
                 logger.info("Added DSplatoonLiga as filtered stream rule");
             }
             createStream();
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             logger.error("Something bad happened, we don't know what, but here's the stacktrace", ex);
         }
     }
@@ -69,17 +72,20 @@ public class TwitterNotificationService {
                     try {
                         if (tweet.getUser() != null) {
                             DiscordBot.getJDA().getTextChannelById(SunnySettings.SOCIAL_MEDIA.aLong("channel"))
-                                    .sendMessage(String.format("<@&1028431936726777946> https://twitter.com/%s/status/%s", tweet.getUser().getName(), tweet.getId()))
+                                    .sendMessage(
+                                            String.format("<@&1028431936726777946> https://twitter.com/%s/status/%s",
+                                                    tweet.getUser().getName(), tweet.getId()))
                                     .queue();
                         }
-                    } catch(Exception ex) {
+                    } catch (Exception ex) {
                         logger.error("Caught uncaught weird exception", ex);
                     }
                 }
 
                 @Override
                 public void onStreamError(int httpCode, String error) {
-                    logger.warn("An error occurred whilst running a twitter stream (Responsecode " + httpCode + "): " + error);
+                    logger.warn("An error occurred whilst running a twitter stream (Responsecode " + httpCode + "): "
+                            + error);
                 }
 
                 @Override
@@ -100,6 +106,7 @@ public class TwitterNotificationService {
         createStream();
     }
 
+    @Deprecated
     public void startRestartService() {
         logger.info("Restart service started successfully!");
 
