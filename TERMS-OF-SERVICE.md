@@ -45,7 +45,7 @@ To function, the Bot processes limited data, which may include:
 - **Tournament data:** information submitted for Challonge-integrated tournaments (e.g., participant names, match results)
 - **Linked account references:** where features require it, references to Twitch channel IDs or YouTube channel IDs used for notification features (not your personal Twitch/YouTube account credentials — we never ask for or store your passwords)
 
-We do not sell your data. Data is used solely to operate the features described in Section 1. For details on retention and your rights regarding this data, see our [Privacy Policy](#) *(link to be added)*.
+We do not sell your data. Data is used solely to operate the features described in Section 1. For details on retention and your rights regarding this data, see our [Privacy Policy](https://github.com/Deutsche-Splat-Bundesliga/Sunny/edit/main/PRIVACY-POLICY.md).
 
 ## 5. Third-Party Services
 
