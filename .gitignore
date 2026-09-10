@@ -29,6 +29,7 @@ bot.properties
 
 # Generated binaries
 *.jar
+!gradle-wrapper.jar
 
 # Local database
 *.db
