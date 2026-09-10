@@ -53,17 +53,9 @@ tasks.shadowJar {
     archiveFileName = "${project.name}.jar"
 }
 
-tasks.shadowJar {
-    archiveFileName = "${project.name}.jar"
-}
-
-tasks.withType(Tar).configureEach {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
-
-tasks.withType(Zip).configureEach {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-}
+tasks.named('distTar') { enabled = false }
+tasks.named('distZip') { enabled = false }
+tasks.named('startScripts') { enabled = false }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
