@@ -50,6 +50,9 @@ dependencies {
 }
 
 tasks.named('jar') { enabled = false }
+tasks.named('distTar') { enabled = false }
+tasks.named('distZip') { enabled = false }
+tasks.named('startScripts') { enabled = false }
 
 tasks.shadowJar {
     archiveFileName = "${project.name}.jar"
