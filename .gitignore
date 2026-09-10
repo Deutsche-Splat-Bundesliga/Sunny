@@ -1,0 +1,38 @@
+# Visual Studio
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+[Bb]uild[Ll]og/
+[Bb]in/
+[Oo]bj/
+
+# Gradle
+.gradle/
+build/
+
+# Logs
+logs/
+*.log
+
+# Local configuration / secrets
+bot.properties
+
+# Generated binaries
+*.jar
+
+# Local database
+*.db
+
+# Visual Studio Code
+.vscode/
+!*.code-snippets

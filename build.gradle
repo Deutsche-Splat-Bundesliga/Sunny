@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.gradleup.shadow' version '9.3.1'
+}
+
+application {
+    mainClass = "dsb.sunny.DiscordBot"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    maven {
+        name 'm2-dv8tion'
+        url 'https://m2.dv8tion.net/releases'
+    }
+    maven {
+        url 'https://jitpack.io/'
+    }
+    mavenCentral()
+}
+
+dependencies {
+    // API Wrappers
+    implementation 'net.dv8tion:JDA:6.3.0'
+    implementation 'com.github.twitch4j:twitch4j:1.25.0'
+
+    // Database
+    implementation 'org.xerial:sqlite-jdbc:3.51.2.0'
+
+    // Logging
+    implementation 'ch.qos.logback:logback-classic:1.5.31'
+
+    // Utils
+    implementation 'me.xdrop:fuzzywuzzy:1.4.0'
+    implementation 'com.vdurmont:emoji-java:5.1.1'
+    implementation 'com.github.ben-manes.caffeine:caffeine:3.2.3'
+    implementation 'org.json:json:20250517'
+
+    // Challonge
+    implementation 'com.github.Inkception.challonge-java:core:a18af41a4b'
+    implementation 'com.github.Inkception.challonge-java:gson:a18af41a4b'
+    implementation 'com.github.Inkception.challonge-java:retrofit:a18af41a4b'
+}
+
+tasks.shadowJar {
+    archiveFileName = "${project.name}.jar"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(Javadoc).configureEach {
+    options.encoding = 'UTF-8'
+}
