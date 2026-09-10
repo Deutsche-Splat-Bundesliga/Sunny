@@ -28,6 +28,8 @@ dependencies {
     // API Wrappers
     implementation 'net.dv8tion:JDA:6.3.0'
     implementation 'com.github.twitch4j:twitch4j:1.25.0'
+    implementation 'io.github.redouane59.twitter:twittered:2.23'
+    implementation 'com.github.scribejava:scribejava-core:8.3.3'
 
     // Database
     implementation 'org.xerial:sqlite-jdbc:3.51.2.0'
