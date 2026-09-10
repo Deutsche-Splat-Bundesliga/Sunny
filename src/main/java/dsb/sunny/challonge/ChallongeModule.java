@@ -17,6 +17,7 @@ import at.stefangeyer.challonge.serializer.gson.GsonSerializer;
 import dsb.sunny.DiscordBot;
 import dsb.sunny.challonge.report.MatchReport;
 import dsb.sunny.challonge.report.MatchReportStatus;
+import dsb.sunny.embeds.Embeds;
 import dsb.sunny.enums.ChannelReferences;
 import dsb.sunny.enums.Emotes;
 import dsb.sunny.settings.SunnySettings;
@@ -39,7 +40,6 @@ import org.slf4j.LoggerFactory;
 import java.awt.*;
 import java.sql.*;
 import java.time.Instant;
-import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -142,18 +142,12 @@ public class ChallongeModule {
                 MatchReport report = createMatchReport(divRole, reportingTeam, opponentTeam, score, false);
                 switch (report.getStatus()) {
                     case OK -> {
-                        // TODO 24.11.2020 Maybe we should add Helper Classes for Embeds. Would make it
-                        // much easier i guess?
-                        // TODO 04.04.2023 Wait, we've been TODOing this for almost 3 years now and we
-                        // did not change anything yet? Wow.
-                        EmbedBuilder eb = new EmbedBuilder()
+                        EmbedBuilder eb = Embeds.byRole(report.getDivision().divisionRole())
                                 .setTitle(String.format("%s • %s", report.getDivision().divisionRole().getName(),
                                         report.getWeekName()), report.getDivisionUrl())
                                 .setDescription(String.format("%s **%s-%s** %s", report.getTeam1(), report.getScore1(),
                                         report.getScore2(), report.getTeam2()))
-                                .setFooter(String.format("Reported by: %s", event.getMember().getNickname()))
-                                .setTimestamp(OffsetDateTime.now())
-                                .setColor(report.getDivision().divisionRole().getColors().getPrimary());
+                                .setFooter(String.format("Reported by: %s", event.getMember().getNickname()));
 
                         /*
                          * if (!report.isForfeited()) {
@@ -235,20 +229,12 @@ public class ChallongeModule {
                         LOG.error("Cannot send messages in changelog channel.");
 
                     } else {
-                        MessageEmbed eb = new EmbedBuilder()
-                                .setColor(event.getMember().getColors().getPrimary() != null
-                                        ? event.getMember().getColors().getPrimary()
-                                        : new Color(0xC5003D))
-                                .setTitle("<:slash:998986781938679930> Report-Command ausgeführt")
-                                .addField("Member", event.getUser().getName() + " " + event.getUser().getAsMention(),
-                                        false)
-                                .addField("Status Match-Report:", String.format("`%s`", report.getStatus().name()),
-                                        false)
-                                .addField("Gegner:", String.format("`%s`", opponentTeam), false)
-                                .addField("Punktestand:", String.format("`%s`", score), false)
-                                // .addField("MVP Reporting:", String.format("`%s`", mvpReporting), false)
-                                // .addField("MVP Gegner:", String.format("`%s`", mvpOpponent), false)
-                                .setTimestamp(OffsetDateTime.now())
+                        MessageEmbed eb = Embeds.changelog(event.getMember(), "Report-Command")
+                                .addField("Status Match-Report:", Embeds.code(report.getStatus().name()), false)
+                                .addField("Gegner:", Embeds.code(opponentTeam), false)
+                                .addField("Punktestand:", Embeds.code(score), false)
+                                // .addField("MVP Reporting:", Embeds.code(mvpReporting), false)
+                                // .addField("MVP Gegner:", Embeds.code(mvpOpponent), false)
                                 .build();
                         changelogChannel.sendMessageEmbeds(eb).queue();
                     }
@@ -303,19 +289,15 @@ public class ChallongeModule {
 
                 switch (report.getStatus()) {
                     case OK -> {
-                        // TODO 24.11.2020 Maybe we should add Helper Classes for Embeds. Would make it
-                        // much easier i guess?
                         StringBuilder sb = new StringBuilder();
-                        EmbedBuilder eb = new EmbedBuilder()
+                        EmbedBuilder eb = Embeds.byRole(report.getDivision().divisionRole())
                                 .setTitle(
                                         String.format("%s • %s (KORREKTUR)",
                                                 report.getDivision().divisionRole().getName(), report.getWeekName()),
                                         report.getDivisionUrl())
                                 .setDescription(String.format("%s **%s-%s** %s", report.getTeam1(), report.getScore1(),
                                         report.getScore2(), report.getTeam2()))
-                                .setFooter(String.format("Corrected by: %s", event.getUser().getName()))
-                                .setTimestamp(OffsetDateTime.now())
-                                .setColor(report.getDivision().divisionRole().getColors().getPrimary());
+                                .setFooter(String.format("Corrected by: %s", event.getUser().getName()));
 
                         if (report.getScore1() == -1 || report.getScore2() == -1) {
                             eb.setDescription(
@@ -398,20 +380,12 @@ public class ChallongeModule {
                         LOG.error("Cannot send messages in changelog channel.");
 
                     } else {
-                        EmbedBuilder eb = new EmbedBuilder()
-                                .setColor(event.getMember().getColors().getPrimary() != null
-                                        ? event.getMember().getColors().getPrimary()
-                                        : new Color(0xC5003D))
-                                .setTitle("<:slash:998986781938679930> Edit-Score-Command ausgeführt")
-                                .addField("Member", event.getUser().getName() + " " + event.getUser().getAsMention(),
-                                        false)
-                                .addField("Status Match-Report:", String.format("`%s`", report.getStatus().name()),
-                                        false)
-                                .addField("Erstes Team:", String.format("`%s`", team1), false)
-                                .addField("Zweites Team:", String.format("`%s`", team2), false)
-                                .setTimestamp(OffsetDateTime.now());
+                        EmbedBuilder eb = Embeds.changelog(event.getMember(), "Edit-Score-Command")
+                                .addField("Status Match-Report:", Embeds.code(report.getStatus().name()), false)
+                                .addField("Erstes Team:", Embeds.code(team1), false)
+                                .addField("Zweites Team:", Embeds.code(team2), false);
                         if (!score.isEmpty()) {
-                            eb.addField("Punktestand:", String.format("`%s`", score), false);
+                            eb.addField("Punktestand:", Embeds.code(score), false);
                         }
                         /*
                          * if (!mvp1.isEmpty()) {
@@ -913,12 +887,10 @@ public class ChallongeModule {
                             ? String.format("Alle Spiele von %s wurden annulliert.", droppedTeam.getName())
                             : String.format("Alle restlichen Spiele von %s werden 0-5 für den Gegner gewertet.",
                                     droppedTeam.getName());
-                    EmbedBuilder eb = new EmbedBuilder()
+                    EmbedBuilder eb = Embeds.byRole(divRole)
                             .setTitle(divRole.getName(), divisionChallonge.getFullChallongeUrl())
-                            .setColor(divRole.getColors().getPrimary())
                             .setDescription(String.format("%s**%s** hat die Liga verlassen.%n%s", Emotes.LEAVE,
-                                    droppedTeam.getName(), decision))
-                            .setTimestamp(OffsetDateTime.now());
+                                    droppedTeam.getName(), decision));
 
                     reportChannel.sendMessageEmbeds(eb.build()).queue();
                 }
@@ -1042,8 +1014,7 @@ public class ChallongeModule {
                     double percentDivisionPlayed = (dr.gamesDivisionPlayed().get(0) * 100)
                             / (double) dr.gamesDivisionPlayed().get(1);
 
-                    EmbedBuilder eb = new EmbedBuilder()
-                            .setColor(dr.divisionRole().getColors().getPrimary())
+                    EmbedBuilder eb = Embeds.byRole(dr.divisionRole())
                             .setAuthor(
                                     String.format("%s möchte aus der %s droppen.", dr.teamName(),
                                             dr.divisionRole().getName()),
@@ -1058,8 +1029,7 @@ public class ChallongeModule {
                                             dr.gamesDivisionPlayed().get(1), percentDivisionPlayed),
                                     true)
                             .setFooter(String.format("Drop-Request ID: %d • Drop requested by: %s", dr.id(),
-                                    dr.captain().getEffectiveName()))
-                            .setTimestamp(OffsetDateTime.now());
+                                    dr.captain().getEffectiveName()));
 
                     Button reject = Button
                             .danger(String.format("&%d:drop:%d:0", orgaRole.getIdLong(), dr.id()), "Drop ablehnen")
@@ -1138,22 +1108,17 @@ public class ChallongeModule {
                 dr.captain().getUser().openPrivateChannel().queue(s -> {
                     MessageEmbed meInform;
                     if ("reject".equals(dropAction)) {
-                        meInform = new EmbedBuilder()
-                                .setColor(new Color(0xFF013C))
-                                .setAuthor("Dein Drop-Antrag wurde abgelehnt.")
+                        meInform = Embeds.error("Dein Drop-Antrag wurde abgelehnt.")
                                 .setDescription("Bitte melde dich beim " + ChannelReferences.HELPDESK.getAsMention()
                                         + " und bespreche es dort weiter.")
                                 .setFooter("Drop-Antrag bearbeitet von: " + user.getName())
-                                .setTimestamp(OffsetDateTime.now())
                                 .build();
                     } else {
-                        meInform = new EmbedBuilder()
-                                .setColor(new Color(0x14FF28))
+                        meInform = Embeds.colored(new Color(0x14FF28))
                                 .setAuthor("Dein Team wurde erfolgreich gedropped!")
                                 .setDescription(
                                         "Schade, dass ihr euch entschieden habt, zu droppen. Wir hoffen trotzdem, dass ihr weiterhin Spaß mit der DSB haben werdet!")
                                 .setFooter("Drop-Antrag bearbeitet von: " + user.getName())
-                                .setTimestamp(OffsetDateTime.now())
                                 .build();
                     }
                     s.sendMessage(new MessageCreateBuilder()

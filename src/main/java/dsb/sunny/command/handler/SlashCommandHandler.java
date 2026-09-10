@@ -3,9 +3,9 @@ package dsb.sunny.command.handler;
 import dsb.sunny.command.commands.admin.*;
 import dsb.sunny.command.commands.uncategorized.HelpCommand;
 import dsb.sunny.command.commands.user.*;
+import dsb.sunny.embeds.Embeds;
 import dsb.sunny.enums.ChannelReferences;
 import dsb.sunny.settings.SunnySettings;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
@@ -19,8 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
-import java.time.OffsetDateTime;
 import java.util.HashMap;
 
 public class SlashCommandHandler extends ListenerAdapter {
@@ -62,14 +60,8 @@ public class SlashCommandHandler extends ListenerAdapter {
 				return;
 			}
 
-			MessageEmbed eb = new EmbedBuilder()
-					.setColor(event.getMember().getColors().getPrimary() != null
-							? event.getMember().getColors().getPrimary()
-							: new Color(0xC5003D))
-					.setTitle("<:slash:998986781938679930> Befehl ausgeführt")
-					.addField("Member", event.getUser().getName() + " " + event.getUser().getAsMention(), false)
-					.addField("Befehl", "`" + event.getCommandString() + "`", false)
-					.setTimestamp(OffsetDateTime.now())
+			MessageEmbed eb = Embeds.changelog(event.getMember(), "Befehl")
+					.addField("Befehl", Embeds.code(event.getCommandString()), false)
 					.build();
 			changelogChannel.sendMessageEmbeds(eb).queue();
 
