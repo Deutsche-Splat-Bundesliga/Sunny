@@ -10,10 +10,10 @@ This Policy applies specifically to the **Sunny** bot. It does not cover Luna or
 
 ## 1. Who Is Responsible for Your Data
 
-**Data Controller:**
-Deutsche Splat Bundesliga e.V.
-Wacholderweg 8, 38440 Wolfsburg
-deutschesplatoonbundesliga@gmail.com
+**Data Controller:**  
+Deutsche Splat Bundesliga e.V.  
+Wacholderweg 8, 38440 Wolfsburg  
+deutschesplatoonbundesliga@gmail.com  
 
 If you have questions about this Policy or want to exercise your rights (see Section 6), contact us using the details above.
 
