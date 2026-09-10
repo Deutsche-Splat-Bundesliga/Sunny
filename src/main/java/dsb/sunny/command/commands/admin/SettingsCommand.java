@@ -27,7 +27,9 @@ public class SettingsCommand implements SlashCommand {
                     switch (type[1]) {
                         case "role" -> {
                             if (value == null) {
-                                event.reply(String.format("Die Join-Rolle ist momentan %s.", event.getGuild().getRoleById(SunnySettings.JOINROLE.aLong("role")).getAsMention())).setEphemeral(true).queue();
+                                event.reply(String.format("Die Join-Rolle ist momentan %s.", event.getGuild()
+                                        .getRoleById(SunnySettings.JOINROLE.aLong("role")).getAsMention()))
+                                        .setEphemeral(true).queue();
                             } else if (event.getGuild().getRoleById(value) == null) {
                                 event.reply("Dieser Wert ist keine ID einer Rolle.").setEphemeral(true).queue();
                             } else {
@@ -36,14 +38,17 @@ public class SettingsCommand implements SlashCommand {
                             }
                         }
                         default ->
-                                event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
+                            event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
                     }
                 }
                 case LIVESTREAM -> {
                     switch (type[1]) {
                         case "channel" -> {
                             if (value == null) {
-                                event.reply(String.format("Die Livestreams werden auf dem Channel %s angekündigt.", event.getGuild().getGuildChannelById(SunnySettings.LIVESTREAM.aLong("channel")).getAsMention())).setEphemeral(true).queue();
+                                event.reply(String.format("Die Livestreams werden auf dem Channel %s angekündigt.",
+                                        event.getGuild().getGuildChannelById(SunnySettings.LIVESTREAM.aLong("channel"))
+                                                .getAsMention()))
+                                        .setEphemeral(true).queue();
                             } else if (event.getGuild().getGuildChannelById(value) == null) {
                                 event.reply("Dieser Wert ist keine ID eines Channels.").setEphemeral(true).queue();
                             } else {
@@ -52,14 +57,19 @@ public class SettingsCommand implements SlashCommand {
                             }
                         }
                         default ->
-                                event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
+                            event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
                     }
                 }
                 case SOCIAL_MEDIA -> {
                     switch (type[1]) {
                         case "channel" -> {
                             if (value == null) {
-                                event.reply(String.format("Die Socialmedia-Ankündigungen werden auf dem Channel %s angekündigt.", event.getGuild().getGuildChannelById(SunnySettings.LIVESTREAM.aLong("channel")).getAsMention())).setEphemeral(true).queue();
+                                event.reply(String
+                                        .format("Die Socialmedia-Ankündigungen werden auf dem Channel %s angekündigt.",
+                                                event.getGuild()
+                                                        .getGuildChannelById(SunnySettings.LIVESTREAM.aLong("channel"))
+                                                        .getAsMention()))
+                                        .setEphemeral(true).queue();
                             } else if (event.getGuild().getGuildChannelById(value) == null) {
                                 event.reply("Dieser Wert ist keine ID eines Channels.").setEphemeral(true).queue();
                             } else {
@@ -67,14 +77,19 @@ public class SettingsCommand implements SlashCommand {
                                 event.reply("Dieser Channel wurde erfolgreich eingestellt!").setEphemeral(true).queue();
                             }
                         }
-                        default -> event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
+                        default ->
+                            event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
                     }
                 }
                 case SCORE_REPORT -> {
                     switch (type[1]) {
                         case "channel" -> {
                             if (value == null) {
-                                event.reply(String.format("Die Scores werden bei %s angezeigt.", event.getGuild().getGuildChannelById(SunnySettings.SCORE_REPORT.aLong("channel")).getAsMention())).setEphemeral(true).queue();
+                                event.reply(String.format("Die Scores werden bei %s angezeigt.",
+                                        event.getGuild()
+                                                .getGuildChannelById(SunnySettings.SCORE_REPORT.aLong("channel"))
+                                                .getAsMention()))
+                                        .setEphemeral(true).queue();
                             } else if (event.getGuild().getGuildChannelById(value) == null) {
                                 event.reply("Dieser Wert ist keine ID eines Channels.").setEphemeral(true).queue();
                             } else {
@@ -84,14 +99,18 @@ public class SettingsCommand implements SlashCommand {
 
                         }
                         default ->
-                                event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
+                            event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
                     }
                 }
                 case DROP_REQUEST -> {
                     switch (type[1]) {
                         case "channel" -> {
                             if (value == null) {
-                                event.reply(String.format("Die Drops werden bei %s angezeigt.", event.getGuild().getGuildChannelById(SunnySettings.DROP_REQUEST.aLong("channel")).getAsMention())).setEphemeral(true).queue();
+                                event.reply(String.format("Die Drops werden bei %s angezeigt.",
+                                        event.getGuild()
+                                                .getGuildChannelById(SunnySettings.DROP_REQUEST.aLong("channel"))
+                                                .getAsMention()))
+                                        .setEphemeral(true).queue();
                             } else if (event.getGuild().getGuildChannelById(value) == null) {
                                 event.reply("Dieser Wert ist keine ID eines Channels.").setEphemeral(true).queue();
                             } else {
@@ -100,14 +119,16 @@ public class SettingsCommand implements SlashCommand {
                             }
                         }
                         default ->
-                                event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
+                            event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
                     }
                 }
                 case CHANGELOG -> {
                     switch (type[1]) {
                         case "channel" -> {
                             if (value == null) {
-                                event.reply(String.format("Bot-Commands werden bei %s angezeigt.", event.getGuild().getGuildChannelById(SunnySettings.CHANGELOG.aLong("channel")).getAsMention())).setEphemeral(true).queue();
+                                event.reply(String.format("Bot-Commands werden bei %s angezeigt.", event.getGuild()
+                                        .getGuildChannelById(SunnySettings.CHANGELOG.aLong("channel")).getAsMention()))
+                                        .setEphemeral(true).queue();
                             } else if (event.getGuild().getGuildChannelById(value) == null) {
                                 event.reply("Dieser Wert ist keine ID eines Channels.").setEphemeral(true).queue();
                             } else {
@@ -116,40 +137,46 @@ public class SettingsCommand implements SlashCommand {
                             }
                         }
                         default ->
-                                event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
+                            event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
                     }
                 }
                 case MAPPOOL -> {
                     switch (type[1]) {
                         case "channel" -> {
                             if (value == null) {
-                                event.reply(String.format("Der jetzige Mappool heißt \"%s\"", SunnySettings.MAPPOOL.string("title"))).setEphemeral(true).queue();
+                                event.reply(String.format("Der jetzige Mappool heißt \"%s\"",
+                                        SunnySettings.MAPPOOL.string("title"))).setEphemeral(true).queue();
                             }
                             DiscordBot.getMapListGenerator().setTitle(value);
                             event.reply("Dieser Titel wurde erfolgreich eingestellt!").setEphemeral(true).queue();
                         }
                         default ->
-                                event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
+                            event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
                     }
                 }
                 case GENERAL -> {
                     switch (type[1]) {
                         case "color" -> {
                             if (value == null) {
-                                event.reply(String.format("Die jetzige Farbe hat den HEX-Code %s", SunnySettings.GENERAL.string("color"))).setEphemeral(true).queue();
+                                event.reply(String.format("Die jetzige Farbe hat den HEX-Code %s",
+                                        SunnySettings.GENERAL.string("color"))).setEphemeral(true).queue();
                             } else {
                                 try {
                                     Color c = Color.decode(value);
                                     SunnySettings.GENERAL.setValue("color", c);
-                                    event.reply("Diese Farbe wurde erfolgreich eingestellt!").setEphemeral(true).queue();
+                                    event.reply("Diese Farbe wurde erfolgreich eingestellt!").setEphemeral(true)
+                                            .queue();
                                 } catch (NumberFormatException ex) {
                                     event.reply("Das ist kein Hex-Code.").setEphemeral(true).queue();
                                 }
                             }
                         }
                         default ->
-                                event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
+                            event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
                     }
+                }
+                default -> {
+                    event.reply("Diese Einstellung wurde noch nicht implementiert.").setEphemeral(true).queue();
                 }
             }
         }
@@ -159,15 +186,16 @@ public class SettingsCommand implements SlashCommand {
     public CommandData commandData() {
         return Commands.slash("settings", "Ändere Einstellungen bei Sunny, oder schaue sie dir an.")
                 .setDefaultPermissions(DefaultMemberPermissions.DISABLED)
-                .addOptions(new OptionData(OptionType.STRING, "type", "Der Typ, welche Einstellung du ändern willst.", true)
-                        .addChoice("Joinrole (ID)", "joinrole:role")
-                        .addChoice("Livestream-Channel (ID)", "livestream:channel")
-                        .addChoice("Socialmedia-Channel (ID)", "social_media:channel")
-                        .addChoice("Score-Report-Channel (ID)", "score_report:channel")
-                        .addChoice("Drop-Requests-Channel (ID)", "drop_request:channel")
-                        .addChoice("Changelog-Channel (ID)", "changelog:channel")
-                        .addChoice("Mappool-Titel (Name)", "mappool:title")
-                        .addChoice("Farbe (HEX-Code)", "general:color"))
+                .addOptions(
+                        new OptionData(OptionType.STRING, "type", "Der Typ, welche Einstellung du ändern willst.", true)
+                                .addChoice("Joinrole (ID)", "joinrole:role")
+                                .addChoice("Livestream-Channel (ID)", "livestream:channel")
+                                .addChoice("Socialmedia-Channel (ID)", "social_media:channel")
+                                .addChoice("Score-Report-Channel (ID)", "score_report:channel")
+                                .addChoice("Drop-Requests-Channel (ID)", "drop_request:channel")
+                                .addChoice("Changelog-Channel (ID)", "changelog:channel")
+                                .addChoice("Mappool-Titel (Name)", "mappool:title")
+                                .addChoice("Farbe (HEX-Code)", "general:color"))
                 .addOption(OptionType.STRING, "value", "Der Wert, der gesetzt werden soll.");
     }
 }

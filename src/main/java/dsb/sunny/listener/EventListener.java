@@ -2,7 +2,6 @@ package dsb.sunny.listener;
 
 import dsb.sunny.DiscordBot;
 import dsb.sunny.enums.Emotes;
-import dsb.sunny.nowrite.NoWriteRoleModule;
 import dsb.sunny.settings.SunnySettings;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -72,7 +71,6 @@ public class EventListener extends ListenerAdapter {
         String[] argsModal = event.getModalId().split(":");
         switch (argsModal[0]) {
             case "lft" -> {
-                NoWriteRoleModule module = DiscordBot.getNwrm();
                 TextChannel channel = event.getGuild().getTextChannelById(1013418618853281842L);
 
                 event.deferEdit().queue();
@@ -85,12 +83,13 @@ public class EventListener extends ListenerAdapter {
                             case "backline" -> Emotes.BACKLINE + "Backline";
                             default -> event.getValue("role").getAsString();
                         }, true)
-                        .addField("**Voice Chat Verfügbarkeit:**", switch (event.getValue("vc").getAsString().toLowerCase()) {
-                            case "ja" -> "✅ Ja";
-                            case "manchmal" -> "🟡 Manchmal";
-                            case "nein" -> "❌ Nein";
-                            default -> event.getValue("vc").getAsString();
-                        }, true)
+                        .addField("**Voice Chat Verfügbarkeit:**",
+                                switch (event.getValue("vc").getAsString().toLowerCase()) {
+                                    case "ja" -> "✅ Ja";
+                                    case "manchmal" -> "🟡 Manchmal";
+                                    case "nein" -> "❌ Nein";
+                                    default -> event.getValue("vc").getAsString();
+                                }, true)
                         .addField("**Erfahrungen:**", event.getValue("exp").getAsString(), false)
                         .addField("**sucht nach Skillklasse:**", event.getValue("skill").getAsString(), false)
                         .addField("Discord-Account:", event.getMember().getAsMention(), false)
@@ -114,26 +113,31 @@ public class EventListener extends ListenerAdapter {
                     return;
                 }
                 if (!event.getGuild().getSelfMember().canInteract(role)) {
-                    event.reply("Ich kann mit dieser Rolle nicht interagieren, bitte benachrichtige einen Turnierleiter.").queue();
+                    event.reply(
+                            "Ich kann mit dieser Rolle nicht interagieren, bitte benachrichtige einen Turnierleiter.")
+                            .queue();
                     return;
                 }
                 event.deferEdit().queue();
                 if (event.getMember().getRoles().contains(role)) {
-                    event.getGuild().removeRoleFromMember(UserSnowflake.fromId(event.getMember().getId()), role).queue(success -> {
-                        LOG.info("Removed role {} from member {}", role.getId(), event.getMember().getId());
-                    });
+                    event.getGuild().removeRoleFromMember(UserSnowflake.fromId(event.getMember().getId()), role)
+                            .queue(success -> {
+                                LOG.info("Removed role {} from member {}", role.getId(), event.getMember().getId());
+                            });
                     return;
                 }
-                event.getGuild().addRoleToMember(UserSnowflake.fromId(event.getMember().getId()), role).queue(success -> {
-                    LOG.info("Added role {} to member {}", role.getId(), event.getMember().getId());
-                });
+                event.getGuild().addRoleToMember(UserSnowflake.fromId(event.getMember().getId()), role)
+                        .queue(success -> {
+                            LOG.info("Added role {} to member {}", role.getId(), event.getMember().getId());
+                        });
             }
         }
     }
 
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        if (!event.isFromGuild() || event.isWebhookMessage() || event.getChannelType() != ChannelType.TEXT) return;
+        if (!event.isFromGuild() || event.isWebhookMessage() || event.getChannelType() != ChannelType.TEXT)
+            return;
         try {
             if (!(event.getMember().hasPermission(Permission.MANAGE_ROLES) &&
                     event.getMember().hasPermission(Permission.MANAGE_CHANNEL))) {

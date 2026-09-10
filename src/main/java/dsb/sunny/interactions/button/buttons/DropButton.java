@@ -9,8 +9,6 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.InteractionHook;
 
-import java.util.Collections;
-
 public class DropButton implements SunnyButton {
     @Override
     public void handle(ButtonInteractionEvent event, String action) throws Exception {
@@ -28,7 +26,8 @@ public class DropButton implements SunnyButton {
                         case "Drop ablehnen" -> "reject";
                         case "Droppen und Spiele annullieren" -> "nullify";
                         case "Droppen und restliche Spiele 0-5 werten" -> "score";
-                        default -> throw new IllegalArgumentException("Illegal argument: " + event.getButton().getLabel());
+                        default ->
+                            throw new IllegalArgumentException("Illegal argument: " + event.getButton().getLabel());
                     };
                     cm.dropTeam(id, dropAction, event.getUser());
                     MessageEmbed old = event.getMessage().getEmbeds().get(0);
@@ -38,7 +37,8 @@ public class DropButton implements SunnyButton {
                             .addField("Aktion:", event.getButton().getLabel(), false)
                             .build();
                     interaction.editOriginalEmbeds(me)
-                            .setContent("Der Drop wurde von %s durchgeführt.".formatted(event.getMember().getAsMention()))
+                            .setContent(
+                                    "Der Drop wurde von %s durchgeführt.".formatted(event.getMember().getAsMention()))
                             .setReplace(true)
                             .queue();
                 } else {

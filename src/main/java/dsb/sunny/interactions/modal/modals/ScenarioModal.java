@@ -6,10 +6,9 @@ import dsb.sunny.scenarios.SplatoonScenarios;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.SQLException;
-
 public class ScenarioModal implements SunnyModal {
     private SplatoonScenarios scenarios;
+
     @Override
     public void handle(@NotNull ModalInteractionEvent event, String modalAction) throws Exception {
         if (scenarios == null) {

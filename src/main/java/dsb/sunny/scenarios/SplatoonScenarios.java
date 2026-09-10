@@ -5,7 +5,6 @@ import dsb.sunny.scenarios.scenario.Scenario;
 import dsb.sunny.scenarios.scenario.ScenarioImpl;
 import dsb.sunny.settings.SunnySettings;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.Category;
@@ -39,7 +38,7 @@ public class SplatoonScenarios {
                         Title TEXT NOT NULL,
                         RulesDe TEXT NOT NULL,
                         RulesEn TEXT NOT NULL,
-                    
+
                         PRIMARY KEY (ID AUTOINCREMENT)
                     );""");
 
@@ -47,7 +46,7 @@ public class SplatoonScenarios {
                     CREATE TABLE IF NOT EXISTS ContradictingScenarios (
                         FirstID INTEGER NOT NULL,
                         SecondID INTEGER NOT NULL,
-                    
+
                         PRIMARY KEY (FirstID, SecondID),
                         FOREIGN KEY (FirstID) REFERENCES SplatoonScenarios(ID) ON DELETE CASCADE,
                         FOREIGN KEY (SecondID) REFERENCES SplatoonScenarios(ID) ON DELETE CASCADE
@@ -77,8 +76,7 @@ public class SplatoonScenarios {
                         rs.getInt("ID"),
                         rs.getString("Title"),
                         rs.getString("RulesDe"),
-                        rs.getString("RulesEn")
-                ));
+                        rs.getString("RulesEn")));
             }
 
             rs = conn.createStatement().executeQuery("SELECT * FROM ContradictingScenarios");
@@ -101,7 +99,8 @@ public class SplatoonScenarios {
 
     public void addScenario(String title, String rulesDe, String rulesEn) throws SQLException {
         try (Connection conn = DiscordBot.borrowDatabaseConnection()) {
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO SplatoonScenarios (Title, RulesDe, RulesEn) VALUES (?, ?, ?)");
+            PreparedStatement ps = conn
+                    .prepareStatement("INSERT INTO SplatoonScenarios (Title, RulesDe, RulesEn) VALUES (?, ?, ?)");
             ps.setString(1, title);
             ps.setString(2, rulesDe);
             ps.setString(3, rulesEn);
@@ -123,7 +122,8 @@ public class SplatoonScenarios {
         rebuildScenarios();
     }
 
-    public void addContradictingScenario(Scenario scenario1, Scenario scenario2) throws SQLException, IllegalArgumentException {
+    public void addContradictingScenario(Scenario scenario1, Scenario scenario2)
+            throws SQLException, IllegalArgumentException {
         if (scenario1 == null || scenario2 == null) {
             throw new IllegalArgumentException("Scenarios must not be null");
         }
@@ -132,7 +132,8 @@ public class SplatoonScenarios {
         }
 
         try (Connection conn = DiscordBot.borrowDatabaseConnection()) {
-            PreparedStatement ps = conn.prepareStatement("INSERT OR IGNORE INTO ContradictingScenarios (FirstID, SecondID) VALUES (?, ?);");
+            PreparedStatement ps = conn.prepareStatement(
+                    "INSERT OR IGNORE INTO ContradictingScenarios (FirstID, SecondID) VALUES (?, ?);");
             ps.setInt(1, scenario1.getId());
             ps.setInt(2, scenario2.getId());
             ps.executeUpdate();
@@ -142,7 +143,8 @@ public class SplatoonScenarios {
         scenario2.addContradictingScenario(scenario1);
     }
 
-    public void removeContradictingScenario(Scenario scenario1, Scenario scenario2) throws SQLException, IllegalArgumentException {
+    public void removeContradictingScenario(Scenario scenario1, Scenario scenario2)
+            throws SQLException, IllegalArgumentException {
         if (scenario1 == null || scenario2 == null) {
             throw new IllegalArgumentException("Scenarios must not be null");
         }
@@ -151,7 +153,8 @@ public class SplatoonScenarios {
         }
 
         try (Connection conn = DiscordBot.borrowDatabaseConnection()) {
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM ContradictingScenarios WHERE FirstID = ? AND SecondID = ?;");
+            PreparedStatement ps = conn
+                    .prepareStatement("DELETE FROM ContradictingScenarios WHERE FirstID = ? AND SecondID = ?;");
             ps.setInt(1, scenario1.getId());
             ps.setInt(2, scenario2.getId());
             ps.executeUpdate();
@@ -167,7 +170,9 @@ public class SplatoonScenarios {
         }
 
         channelCategory.createTextChannel("team-" + teamName)
-                // .addMemberPermissionOverride(member.getIdLong(), List.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_HISTORY, Permission.USE_APPLICATION_COMMANDS, Permission.MESSAGE_SEND), null)
+                // .addMemberPermissionOverride(member.getIdLong(),
+                // List.of(Permission.VIEW_CHANNEL, Permission.MESSAGE_HISTORY,
+                // Permission.USE_APPLICATION_COMMANDS, Permission.MESSAGE_SEND), null)
                 .queue(channel -> {
                     EmbedBuilder eb = new EmbedBuilder()
                             .setAuthor("Splatoon-Szenarien")
@@ -216,14 +221,16 @@ public class SplatoonScenarios {
         return rolled;
     }
 
-    public void editScenario(int id, String title, String rulesDe, String rulesEn) throws SQLException, NoSuchElementException {
+    public void editScenario(int id, String title, String rulesDe, String rulesEn)
+            throws SQLException, NoSuchElementException {
         Scenario s = getScenario(id);
         if (s == null) {
             throw new NoSuchElementException("scenario with id " + id + " does not exist");
         }
 
         try (Connection conn = DiscordBot.borrowDatabaseConnection()) {
-            PreparedStatement ps = conn.prepareStatement("UPDATE SplatoonScenarios SET Title = ?, RulesDe = ?, RulesEn = ? WHERE ID = ?;");
+            PreparedStatement ps = conn
+                    .prepareStatement("UPDATE SplatoonScenarios SET Title = ?, RulesDe = ?, RulesEn = ? WHERE ID = ?;");
             ps.setString(1, title);
             ps.setString(2, rulesDe);
             ps.setString(3, rulesEn);

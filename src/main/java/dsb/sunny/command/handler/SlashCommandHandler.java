@@ -63,7 +63,9 @@ public class SlashCommandHandler extends ListenerAdapter {
 			}
 
 			MessageEmbed eb = new EmbedBuilder()
-					.setColor(event.getMember().getColor() != null ? event.getMember().getColor() : new Color(0xC5003D))
+					.setColor(event.getMember().getColors().getPrimary() != null
+							? event.getMember().getColors().getPrimary()
+							: new Color(0xC5003D))
 					.setTitle("<:slash:998986781938679930> Befehl ausgeführt")
 					.addField("Member", event.getUser().getName() + " " + event.getUser().getAsMention(), false)
 					.addField("Befehl", "`" + event.getCommandString() + "`", false)
@@ -71,8 +73,9 @@ public class SlashCommandHandler extends ListenerAdapter {
 					.build();
 			changelogChannel.sendMessageEmbeds(eb).queue();
 
-			LOG.info("Member {} executed command '{}' - full command: {}", event.getMember().getUser().getName(), event.getFullCommandName(), event.getCommandString());
-		} catch(Exception ex) {
+			LOG.info("Member {} executed command '{}' - full command: {}", event.getMember().getUser().getName(),
+					event.getFullCommandName(), event.getCommandString());
+		} catch (Exception ex) {
 			if (ex instanceof InsufficientPermissionException permissionException) {
 				String permission = "Missing following permission to properly execute this command: **%s**"
 						.formatted(permissionException.getPermission().getName());
@@ -98,8 +101,8 @@ public class SlashCommandHandler extends ListenerAdapter {
 		slashCommands.put("report", new ReportCommand());
 		slashCommands.put("divisions", new DivisionsCommand());
 		slashCommands.put("nowrite", new NoWriteRoleCommand());
-		//slashCommands.put("mvp", new MVPCommand());
-		//slashCommands.put("adminmvp", new AdminMVPCommand());
+		// slashCommands.put("mvp", new MVPCommand());
+		// slashCommands.put("adminmvp", new AdminMVPCommand());
 		slashCommands.put("givecaprole", new GiveCapRoleCommand());
 		slashCommands.put("drop", new DropCommand());
 		slashCommands.put("selectionroles", new SelectionRolesCommand());
@@ -109,18 +112,19 @@ public class SlashCommandHandler extends ListenerAdapter {
 		slashCommands.put("rw", new RWCommand());
 		slashCommands.put("settings", new SettingsCommand());
 		slashCommands.put("editscore", new EditScoreCommand());
-		// slashCommands.put("looking4", new LookingForCommand()); // TODO: 08.09.2022 Cyo: Muss noch Channels einstellen und Team-Modal machen
+		// slashCommands.put("looking4", new LookingForCommand()); // TODO: 08.09.2022
+		// Cyo: Muss noch Channels einstellen und Team-Modal machen
 		slashCommands.put("cleaner", new CleanerCommand());
 		slashCommands.put("remindme", new ReminderCommand());
 		slashCommands.put("cocap", new CoCaptainCommand());
-        slashCommands.put("scenario", new ScenarioCommand());
+		slashCommands.put("scenario", new ScenarioCommand());
 		slashCommands.put("inkstellations", new InkstellationsCommand());
 
 		CommandListUpdateAction commandsAction = jda.updateCommands();
 		for (SlashCommand cmd : slashCommands.values()) {
 			commandsAction.addCommands(cmd.commandData());
 		}
-		
+
 		if (update) {
 			commandsAction.queue(success -> {
 				success.forEach(command -> commandsActionCommands.put(command.getName(), command));

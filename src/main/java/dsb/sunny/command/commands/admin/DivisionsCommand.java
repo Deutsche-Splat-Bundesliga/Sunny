@@ -4,7 +4,6 @@ import dsb.sunny.DiscordBot;
 import dsb.sunny.command.handler.SlashCommand;
 import dsb.sunny.challonge.ChallongeModule;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
@@ -19,7 +18,6 @@ public class DivisionsCommand implements SlashCommand {
     public void handle(SlashCommandInteractionEvent event) throws Exception {
         if (event.getMember().getPermissions().contains(Permission.ADMINISTRATOR)) {
             ChallongeModule srm = DiscordBot.getChallonge();
-            Guild guild = event.getGuild();
             String subcommand = event.getSubcommandName();
 
             switch (subcommand) {
@@ -41,7 +39,8 @@ public class DivisionsCommand implements SlashCommand {
                 default -> event.reply("?").setEphemeral(true).queue();
             }
         } else {
-            event.reply("Du bist kein Turnierleiter und kannst daher diesen Befehl nicht benutzen.").setEphemeral(true).queue();
+            event.reply("Du bist kein Turnierleiter und kannst daher diesen Befehl nicht benutzen.").setEphemeral(true)
+                    .queue();
         }
     }
 

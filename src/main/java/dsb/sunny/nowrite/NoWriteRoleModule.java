@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 public class NoWriteRoleModule {
 
     private final Map<TextChannel, Role> noWriteChannels;
-    private JDA jda;
     private final Guild guild;
     private final ScheduledExecutorService t;
 
@@ -32,7 +31,6 @@ public class NoWriteRoleModule {
 
     public NoWriteRoleModule(JDA jda) {
         this.noWriteChannels = new HashMap<>();
-        this.jda = jda;
         this.guild = DiscordBot.getDSBGuild();
 
         try (Connection conn = DiscordBot.borrowDatabaseConnection()) {
@@ -82,11 +80,13 @@ public class NoWriteRoleModule {
 
         ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ZonedDateTime nextRun = now.withHour(2).withMinute(0).withSecond(0);
-        if (now.compareTo(nextRun) >= 0) nextRun = nextRun.plusDays(1);
+        if (now.compareTo(nextRun) >= 0)
+            nextRun = nextRun.plusDays(1);
         Duration d = Duration.between(now, nextRun);
         long seconds = d.getSeconds();
         LOG.info(String.format("%d Roles were removed.", removedRoles));
-        LOG.info(String.format("Next update: %s (%d seconds)", nextRun.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)), seconds));
+        LOG.info(String.format("Next update: %s (%d seconds)",
+                nextRun.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)), seconds));
 
         t.schedule(this::updateRoles, seconds, TimeUnit.SECONDS);
     }
@@ -101,14 +101,15 @@ public class NoWriteRoleModule {
         if (!member.getRoles().contains(r)) {
             try (Connection conn = DiscordBot.borrowDatabaseConnection()) {
                 PreparedStatement ps = conn.prepareStatement("""
-                    INSERT INTO nowriteroles
-                    VALUES (?, ?, date('now', '+2 days'));
-                    """);
+                        INSERT INTO nowriteroles
+                        VALUES (?, ?, date('now', '+2 days'));
+                        """);
                 ps.setLong(1, member.getIdLong());
                 ps.setLong(2, r.getIdLong());
                 ps.execute();
             }
-            guild.addRoleToMember(member, r).queueAfter(15, TimeUnit.MINUTES, null, fail -> LOG.error("Could not assign NoWriteRole to {} (Role: {})", member.getIdLong(), r.getId()));
+            guild.addRoleToMember(member, r).queueAfter(15, TimeUnit.MINUTES, null,
+                    fail -> LOG.error("Could not assign NoWriteRole to {} (Role: {})", member.getIdLong(), r.getId()));
         }
     }
 

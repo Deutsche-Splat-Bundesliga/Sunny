@@ -7,7 +7,6 @@ import dsb.sunny.scenarios.scenario.Scenario;
 import dsb.sunny.utils.SunnyUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.label.Label;
 import net.dv8tion.jda.api.components.textinput.TextInput;
 import net.dv8tion.jda.api.components.textinput.TextInputStyle;
@@ -106,9 +105,11 @@ public class ScenarioCommand implements SlashCommand {
             event.reply("Die sich widersprechenden Szenarien wurden entfernt!").setEphemeral(true).queue();
         } catch (IllegalArgumentException e) {
             if (s1 == null) {
-                event.reply("Das erste Szenario mit der ID %d gibt es nicht.".formatted(firstId)).setEphemeral(true).queue();
+                event.reply("Das erste Szenario mit der ID %d gibt es nicht.".formatted(firstId)).setEphemeral(true)
+                        .queue();
             } else if (s2 == null) {
-                event.reply("Das zweite Szenario mit der ID %d gibt es nicht.".formatted(secondId)).setEphemeral(true).queue();
+                event.reply("Das zweite Szenario mit der ID %d gibt es nicht.".formatted(secondId)).setEphemeral(true)
+                        .queue();
             } else {
                 event.reply("Ein Szenario kann sich nicht selbst widersprechen.").setEphemeral(true).queue();
             }
@@ -127,9 +128,11 @@ public class ScenarioCommand implements SlashCommand {
             event.reply("Die sich widersprechenden Szenarien wurden gespeichert!").setEphemeral(true).queue();
         } catch (IllegalArgumentException e) {
             if (s1 == null) {
-                event.reply("Das erste Szenario mit der ID %d gibt es nicht.".formatted(firstId)).setEphemeral(true).queue();
+                event.reply("Das erste Szenario mit der ID %d gibt es nicht.".formatted(firstId)).setEphemeral(true)
+                        .queue();
             } else if (s2 == null) {
-                event.reply("Das zweite Szenario mit der ID %d gibt es nicht.".formatted(secondId)).setEphemeral(true).queue();
+                event.reply("Das zweite Szenario mit der ID %d gibt es nicht.".formatted(secondId)).setEphemeral(true)
+                        .queue();
             } else {
                 event.reply("Ein Szenario kann sich nicht selbst widersprechen.").setEphemeral(true).queue();
             }
@@ -194,17 +197,16 @@ public class ScenarioCommand implements SlashCommand {
 
     private void onListScenarios(SlashCommandInteractionEvent event) {
         List<MessageEmbed> scenarioEmbeds = scenarios.getScenarios().stream().map(s -> {
-                    EmbedBuilder eb = new EmbedBuilder(s.getAsEmbed(false));
-                    if (!s.getContradictingScenarios().isEmpty()) {
-                        StringBuilder sb = new StringBuilder();
-                        for (Scenario s2 : s.getContradictingScenarios()) {
-                            sb.append(", `").append("#%03d".formatted(s2.getId())).append("`");
-                        }
-                        eb.addField("Widersprechend (wird nicht zusammen gezogen):", sb.substring(2), false);
-                    }
-                    return eb.build();
+            EmbedBuilder eb = new EmbedBuilder(s.getAsEmbed(false));
+            if (!s.getContradictingScenarios().isEmpty()) {
+                StringBuilder sb = new StringBuilder();
+                for (Scenario s2 : s.getContradictingScenarios()) {
+                    sb.append(", `").append("#%03d".formatted(s2.getId())).append("`");
                 }
-        ).toList();
+                eb.addField("Widersprechend (wird nicht zusammen gezogen):", sb.substring(2), false);
+            }
+            return eb.build();
+        }).toList();
         if (scenarioEmbeds.isEmpty()) {
             event.reply("Es wurden noch keine Szenarien erstellt.").setEphemeral(true).queue();
         } else {
@@ -256,7 +258,8 @@ public class ScenarioCommand implements SlashCommand {
             scenarios.createChannel(member, teamName);
             event.reply("Der Kanal wurde erfolgreich gestellt.").setEphemeral(true).queue();
         } catch (IllegalStateException e) {
-            event.reply("Es wurde noch keine Kanalkategorie mit `/roll setcategory` gesetzt.").setEphemeral(true).queue();
+            event.reply("Es wurde noch keine Kanalkategorie mit `/roll setcategory` gesetzt.").setEphemeral(true)
+                    .queue();
         } catch (IllegalArgumentException e) {
             event.reply("Dieser Nutzer ist nicht auf diesem Server.").setEphemeral(true).queue();
         }
@@ -289,7 +292,8 @@ public class ScenarioCommand implements SlashCommand {
                         .addOption(OptionType.INTEGER, "id", "Die ID des Szenarios", true))
 
                 .addSubcommands(new SubcommandData("roll", "Rolle ein Szenario.")
-                        .addOptions(new OptionData(OptionType.INTEGER, "amount", "Die Menge der Szenarien, die ausgeworfen werden sollen")
+                        .addOptions(new OptionData(OptionType.INTEGER, "amount",
+                                "Die Menge der Szenarien, die ausgeworfen werden sollen")
                                 .setRequiredRange(1, 8)));
     }
 }

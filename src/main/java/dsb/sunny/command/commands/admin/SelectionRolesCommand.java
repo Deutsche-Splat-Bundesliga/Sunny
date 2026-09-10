@@ -23,19 +23,21 @@ public class SelectionRolesCommand implements SlashCommand {
     public void handle(SlashCommandInteractionEvent event) throws Exception {
         if (event.getMember().getPermissions().contains(Permission.ADMINISTRATOR)) {
             TextChannel channel = event.getOption("channel", OptionMapping::getAsChannel).asTextChannel();
-            Message message = (event.getOption("messageid") != null ? channel.retrieveMessageById(event.getOption("messageid", OptionMapping::getAsString)).complete() : null);
+            Message message = (event.getOption("messageid") != null
+                    ? channel.retrieveMessageById(event.getOption("messageid", OptionMapping::getAsString)).complete()
+                    : null);
             Role role = event.getOption("role", OptionMapping::getAsRole);
             String emote = event.getOption("emote", OptionMapping::getAsString);
 
-            switch(event.getSubcommandName()) {
+            switch (event.getSubcommandName()) {
                 case "create":
                     String title = event.getOption("title", OptionMapping::getAsString);
                     String description = event.getOption("description", OptionMapping::getAsString);
                     channel.sendMessageEmbeds(new EmbedBuilder()
-                                    .setTitle(title)
-                                    .setDescription(description)
-                                    .setColor(event.getGuild().getSelfMember().getColor())
-                                    .build())
+                            .setTitle(title)
+                            .setDescription(description)
+                            .setColor(event.getGuild().getSelfMember().getColors().getPrimary())
+                            .build())
                             .setComponents(
                                     ActionRow.of(StringSelectMenu.create("selectionroles")
                                             .setDisabled(true)
@@ -48,12 +50,16 @@ public class SelectionRolesCommand implements SlashCommand {
                     break;
                 case "add":
                     if (!event.getGuild().getSelfMember().canInteract(role)) {
-                        event.reply("Ich kann mit der Rolle nicht interagieren. Sicher, dass die Rolle unter meiner eigenen ist?").queue();
+                        event.reply(
+                                "Ich kann mit der Rolle nicht interagieren. Sicher, dass die Rolle unter meiner eigenen ist?")
+                                .queue();
                         return;
                     }
 
                     if (message == null) {
-                        event.reply("https://media.discordapp.net/attachments/975740225613615175/1011951785780449320/unknown.png?width=971&height=657").queue();
+                        event.reply(
+                                "https://media.discordapp.net/attachments/975740225613615175/1011951785780449320/unknown.png?width=971&height=657")
+                                .queue();
                         return;
                     }
 
@@ -75,9 +81,8 @@ public class SelectionRolesCommand implements SlashCommand {
 
                     event.reply("Die Rolle wurde bereits zum Menü hinzugefügt.").queue();
                 }
-                break;
-                case "remove":
-                {
+                    break;
+                case "remove": {
 
                     if (!SelectionRolesManager.hasSelectMenu(message)) {
                         event.reply("Die angegebene Nachricht hat kein SelectMenu.").queue();
@@ -96,7 +101,7 @@ public class SelectionRolesCommand implements SlashCommand {
 
                     event.reply("Die Rolle wurde nie zum Menü hinzugefügt.").queue();
                 }
-                break;
+                    break;
                 case "maxroles":
 
                     if (!SelectionRolesManager.hasSelectMenu(message)) {
@@ -123,12 +128,14 @@ public class SelectionRolesCommand implements SlashCommand {
                     builder.setMaxValues(maxValue);
                     message.editMessageComponents(ActionRow.of(builder.getSelectMenu())).queue();
 
-                    event.reply("Mitglieder können nun nur noch maximal **" + maxValue + "** Rollen auswählen.").queue();
+                    event.reply("Mitglieder können nun nur noch maximal **" + maxValue + "** Rollen auswählen.")
+                            .queue();
                 }
-                break;
+                    break;
             }
         } else {
-            event.reply("Du bist kein Turnierleiter und kannst daher diesen Befehl nicht nutzen.").setEphemeral(true).queue();
+            event.reply("Du bist kein Turnierleiter und kannst daher diesen Befehl nicht nutzen.").setEphemeral(true)
+                    .queue();
         }
     }
 
@@ -153,8 +160,8 @@ public class SelectionRolesCommand implements SlashCommand {
                         .addOption(OptionType.ROLE, "role", "Die Rolle", true))
 
                 .addSubcommands(new SubcommandData("maxroles", "Beschränkt die Auswahlmöglichkeiten eines Menüs.")
-                    .addOption(OptionType.CHANNEL, "channel", "Der Textkanal", true)
-                    .addOption(OptionType.STRING, "messageid", "Die Nachrichtenid", true)
-                    .addOption(OptionType.INTEGER, "maxroles", "Die maximale Anzahl", true));
+                        .addOption(OptionType.CHANNEL, "channel", "Der Textkanal", true)
+                        .addOption(OptionType.STRING, "messageid", "Die Nachrichtenid", true)
+                        .addOption(OptionType.INTEGER, "maxroles", "Die maximale Anzahl", true));
     }
 }
