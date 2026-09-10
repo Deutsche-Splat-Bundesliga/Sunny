@@ -49,13 +49,11 @@ dependencies {
     implementation 'com.github.Inkception.challonge-java:retrofit:a18af41a4b'
 }
 
+tasks.named('jar') { enabled = false }
+
 tasks.shadowJar {
     archiveFileName = "${project.name}.jar"
 }
-
-tasks.named('distTar') { enabled = false }
-tasks.named('distZip') { enabled = false }
-tasks.named('startScripts') { enabled = false }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
