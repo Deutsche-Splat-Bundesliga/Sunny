@@ -1,60 +1,52 @@
 # Installation
 
-Zum Installieren von Sunny und Luna benötigt ihr:
+To install Sunny and Luna, you will need:
 
 - Gradle
 - JDK 21
-- eine [Discord-Bot Applikation(en)](https://discord.com/developers/applications/) für Sunny und/oder Luna
-- eine [Twitch-Applikation](https://dev.twitch.tv/console)
-- eine [Challonge-Applikation](https://connect.challonge.com/challonge/apps)
+- A [Discord bot application](https://discord.com/developers/applications/)
+- A [Twitch application](https://dev.twitch.tv/console)
+- A [Challonge application](https://connect.challonge.com/challonge/apps)
 
-## Bauen des Bots
+## Building the Bot
 
-Das Bauen des Bots setzt ein vollständig aufgesetztes Projekt **mit Gradle** voraus.
-Dabei werden alle Dateien in der ZIP-Datei mitsamt Datenbank **in das Wurzelverzeichnis des Projektes** kopiert.
+Building the bot requires a fully set-up project **with Gradle**.
+All files from the ZIP file, including the database, must be copied **into the project's root directory**.
 
-Danach muss das Gradle-Projekt synchronisiert werden, damit alle Dependencies geladen werden können.
+Afterward, the Gradle project must be synced so that all dependencies can be downloaded.
 
-### Unter Gradle:
+### Under Gradle:
 
-Das Bauen der `.jar`-Datei erfolgt mit der Gradle-Task `shadowJar`. Das Erzeugnis nach erfolgreichem Durchlauf
-befindet sich in `./build/libs/sunny.jar`.
+Building the `.jar` file is done using the Gradle task `shadowJar`. Once completed successfully, the resulting file will be located at `./build/libs/sunny.jar`.
 
 ### bot.properties
 
-In ``bot.properties`` werden alle sensiblen Variablen des Bots gespeichert.
+All sensitive variables for the bot are stored in `bot.properties`.
 
 **Sunny:**
 
-| Schlüssel          | Beschreibung                                                                                                      |
-|--------------------|-------------------------------------------------------------------------------------------------------------------|
-| `token`            | Der Token des Discord-Bots, den man unter `https://discord.com/developers/applications/DISCORD_BOT_ID/bot` erhält |
-| `key_challonge`    | Token der Challonge-v1-API, die man unter `https://connect.challonge.com/challonge/apps` erhält.                  |
-| `guildId`          | Die ID des Discord-Servers                                                                                        |
-| `clientId`         | Die ID der Twitch-Applikation die man unter `https://dev.twitch.tv/console` erhält.                               |
-| `clientSecret`     | Der Geheimschlüssel der Twitch-Applikation die man unter `https://dev.twitch.tv/console` erhält.                  |
-| `youtubechannelid` | Die Channel-ID vom Youtube-Kanal, für welches man Updates (neu hochgeladenes Video) erhalten möchte.              |
-| `restapi_port`     | Der Port der RESTful-API (Standard: 9882)                                                                         |
+| Key | Description |
+| --- | --- |
+| `token` | The Discord bot's token, obtained at `https://discord.com/developers/applications/DISCORD_BOT_ID/bot` |
+| `key_challonge` | Token for the Challonge v1 API, obtained at `https://connect.challonge.com/challonge/apps` |
+| `guildId` | The ID of the Discord server |
+| `clientId` | The ID of the Twitch application, obtained at `https://dev.twitch.tv/console` |
+| `clientSecret` | The secret key of the Twitch application, obtained at `https://dev.twitch.tv/console` |
+| `youtubechannelid` | The channel ID of the YouTube channel for which you want to receive updates (newly uploaded video) |
+| `restapi_port` | The port of the RESTful API (default: 9882) |
 
-**Luna:**
-
-| Schlüssel | Beschreibung                                                                                                      |
-|-----------|-------------------------------------------------------------------------------------------------------------------|
-| `token`   | Der Token des Discord-Bots, den man unter `https://discord.com/developers/applications/DISCORD_BOT_ID/bot` erhält |
-| `guild`   | Die ID des Discord-Servers                                                                                        |
-
-> [WICHTIG]
+> [IMPORTANT]
 >
-> Ohne `bot.properties` kann der Bot nicht gestartet werden oder nicht richtig funktionieren!
+> Without `bot.properties`, the bot cannot be started or will not function correctly!
 
-## Starten des Bots
+## Starting the Bot
 
 ### Shell:
 
-Der Bot kann unter JDK 21 mit dem Command
+The bot can be started under JDK 21 with the command
 
-````shell
+```
 java -Dterminal.jline=false -Dterminal.ansi=true -jar {{JARFILE}}
-````
+```
 
-gestartet werden, wobei ``{{JARFILE}}`` der Name der JAR-Datei ist (Standard: ``sunny.jar`` oder ``luna.jar``).
+where `{{JARFILE}}` is the name of the JAR file (default: `sunny.jar`).
