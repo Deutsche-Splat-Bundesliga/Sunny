@@ -4,7 +4,7 @@
 
 This Privacy Policy explains what data the **Sunny** Discord bot ("Sunny," "the Bot," "the Service") collects, how it is used, and what rights you have regarding that data, as operated on the official **Deutsche Splatoon Bundesliga (DSB)** Discord server by **[YOUR NAME / DSB e.V.]** ("we," "us," "the Operator," "the Controller" under GDPR).
 
-This Policy applies specifically to the **Sunny** bot. It does not cover Luna or any other bot, service, or self-hosted instance of this software operated by third parties.
+This Policy applies specifically to the **Sunny** bot. It does not cover any other bot, service, or self-hosted instance of this software operated by third parties.
 
 ---
 
